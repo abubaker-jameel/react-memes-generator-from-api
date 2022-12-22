@@ -1,12 +1,11 @@
 import React from "react";
-import memesData from "./memesData";
 
-export default function MemeImage() {
+export default function MemeImage(props) {
   return (
     <div className="meme--image--section">
-      <img src={memesData.data.memes[4].url} alt="" />
-      <span className="top--text">Top Text</span>
-      <span className="bottom--text">Bottom Text</span>
+      <img src={props.imageUrl} alt="" />
+      <span className="top--text">{props.topTextValue}</span>
+      <span className="bottom--text">{props.bottomTextValue}</span>
     </div>
   );
 }
