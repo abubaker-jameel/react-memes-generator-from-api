@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "./Form";
 import Header from "./Header";
 import MemeImage from "./MemeImage";
-import memeData from "./memesData";
 
 export default function App() {
   const [formData, setFormData] = useState({
     topText: "",
     bottomText: "",
+    randomImage: "https://i.imgflip.com/1ur9b0.jpg",
   });
-  console.log(formData);
+
   function handleChange(event) {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
@@ -17,14 +17,23 @@ export default function App() {
       [name]: value,
     }));
   }
-  const [memeImage, setMemeImage] = useState(memeData.data.memes[10].url);
+  
+  const [memeImage, setMemeImage] = useState([]);
+
+  useEffect(() => {
+    fetch("https://api.imgflip.com/get_memes")
+      .then((res) => res.json())
+      .then((data) => setMemeImage(data.data.memes));
+  }, []);
+
   function handleImageGenerate() {
-    const randomMemeLength = Math.floor(
-      Math.random() * memeData.data.memes.length
-    );
-    const newMeme = memeData.data.memes[randomMemeLength];
+    const randomMemeLength = Math.floor(Math.random() * memeImage.length);
+    const newMeme = memeImage[randomMemeLength];
     const newUrl = newMeme.url;
-    setMemeImage(newUrl);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      randomImage: newUrl,
+    }));
   }
   return (
     <>
@@ -39,7 +48,7 @@ export default function App() {
         <MemeImage
           topTextValue={formData.topText}
           bottomTextValue={formData.bottomText}
-          imageUrl={memeImage}
+          imageUrl={formData.randomImage}
         />
       </div>
     </>
