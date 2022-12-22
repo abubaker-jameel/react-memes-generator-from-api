@@ -16,7 +16,7 @@ export default function Form(props) {
           name="bottomText"
           placeholder="Bottom Text"
           onChange={props.handleChangeEvent}
-          value={FormData.bottomValue}
+          value={props.bottomValue}
         />
         <button onClick={props.handleNewImage}>Get a new meme image 🖼</button>
       </div>
